@@ -10,9 +10,17 @@ import uuid
 import base64
 from pathlib import Path
 
-TS6_DIR = Path("/opt/teamspeak")
-ADDON_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("myinstants-soundboard")
-PATCHES_FILE = Path("/tmp/patches.json")
+import argparse
+
+parser = argparse.ArgumentParser(description="313 Soundboard - TS6 Addon Installer")
+parser.add_argument("addon_dir", nargs="?", default="myinstants-soundboard", help="Path to addon directory")
+parser.add_argument("--ts-dir", default="/opt/teamspeak", help="Path to TeamSpeak 6 installation")
+parser.add_argument("--patches", default="/tmp/patches.json", help="Path to patches.json")
+_args = parser.parse_args()
+
+TS6_DIR = Path(_args.ts_dir)
+ADDON_DIR = Path(_args.addon_dir)
+PATCHES_FILE = Path(_args.patches)
 INDEX_PATH = TS6_DIR / "html" / "client_ui" / "index.html"
 BINARY_PATH = TS6_DIR / "TeamSpeak"
 
