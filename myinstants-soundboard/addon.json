@@ -1,0 +1,9 @@
+{
+	"id": "myinstants_soundboard",
+	"name": "MyInstants Soundboard",
+	"version": "1.0.0",
+	"inject": "index.html",
+	"injection_point": "BODY",
+	"inject_at": "TAIL",
+	"sources": "src/"
+}

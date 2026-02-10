@@ -1,0 +1,56 @@
+#mi-soundboard-toggle {
+	position: fixed;
+	bottom: 60px;
+	right: 16px;
+	width: 42px;
+	height: 42px;
+	border-radius: 0;
+	background: #D4520A;
+	border: 3px solid #2D1B0E;
+	cursor: pointer;
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 3px 3px 0 #2D1B0E;
+	transition: background 0.1s, transform 0.04s, box-shadow 0.04s;
+}
+
+#mi-soundboard-toggle:hover {
+	background: #E86920;
+}
+
+#mi-soundboard-toggle:active {
+	transform: translate(2px, 2px);
+	box-shadow: 1px 1px 0 #2D1B0E;
+}
+
+#mi-soundboard-toggle svg {
+	width: 22px;
+	height: 22px;
+	fill: #FAF4EA;
+}
+
+#mi-soundboard-panel {
+	position: fixed;
+	bottom: 110px;
+	right: 16px;
+	width: 420px;
+	height: 500px;
+	background: #EDE0CC;
+	border: 3px solid #2D1B0E;
+	z-index: 99998;
+	display: none;
+	box-shadow: 6px 6px 0 #2D1B0E;
+	overflow: hidden;
+}
+
+#mi-soundboard-panel.open {
+	display: block;
+}
+
+#mi-soundboard-iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}

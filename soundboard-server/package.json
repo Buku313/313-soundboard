@@ -1,0 +1,13 @@
+{
+  "name": "ts-soundboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  }
+}
