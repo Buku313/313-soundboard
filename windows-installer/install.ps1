@@ -217,8 +217,26 @@ if (-not $tsDir) {
 Write-Host "  Found: $tsDir" -ForegroundColor Green
 Write-Host ""
 
-# Step 2: Inject addon
-Write-Host "[2/3] Injecting 313 Soundboard addon..." -ForegroundColor Cyan
+# Step 2: Binary patching (required for addon to work)
+Write-Host "[2/3] Patching TeamSpeak binary..." -ForegroundColor Cyan
+$patched = Invoke-BinaryPatch -TSDir $tsDir
+if (-not $patched) {
+    Write-Host ""
+    Write-Host "  WARNING: Binary patching failed or was skipped." -ForegroundColor Yellow
+    Write-Host "  The addon WILL NOT WORK without the binary patch." -ForegroundColor Yellow
+    Write-Host "  TeamSpeak validates its files and will reject the modified HTML." -ForegroundColor Yellow
+    Write-Host ""
+    $continue = Read-Host "  Continue anyway? (y/N)"
+    if ($continue -ne "y" -and $continue -ne "Y") {
+        Write-Host "  Install cancelled."
+        Read-Host "  Press Enter to exit"
+        exit 1
+    }
+}
+Write-Host ""
+
+# Step 3: Inject addon
+Write-Host "[3/3] Injecting 313 Soundboard addon..." -ForegroundColor Cyan
 try {
     Install-Addon -TSDir $tsDir
     Write-Host "  Addon injected successfully!" -ForegroundColor Green
@@ -227,11 +245,6 @@ try {
     Read-Host "  Press Enter to exit"
     exit 1
 }
-Write-Host ""
-
-# Step 3: Binary patching (optional)
-Write-Host "[3/3] Binary patching (optional)..." -ForegroundColor Cyan
-Invoke-BinaryPatch -TSDir $tsDir
 Write-Host ""
 
 # Done
