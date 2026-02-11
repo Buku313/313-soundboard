@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
+:root, [data-theme="classic"] {
   --bg: #EDE0CC;
   --bg-warm: #E4D5BD;
   --cream: #FAF4EA;
@@ -22,6 +22,80 @@
   --border: #8B7355;
   --red: #C23616;
   --green: #4A7A2E;
+  --scanline: rgba(45, 27, 14, 0.015);
+  --grain-opacity: 0.025;
+}
+
+[data-theme="ember"] {
+  --bg: #1A120E;
+  --bg-warm: #241810;
+  --cream: #2E2018;
+  --cream-dark: #261A12;
+  --orange: #FF6B2B;
+  --orange-hover: #FF8550;
+  --orange-dark: #CC5520;
+  --brown: #F0D8C0;
+  --brown-mid: #B89878;
+  --brown-light: #7A6050;
+  --border: #4A3020;
+  --red: #FF4030;
+  --green: #70C040;
+  --scanline: rgba(255, 107, 43, 0.02);
+  --grain-opacity: 0.04;
+}
+
+[data-theme="terminal"] {
+  --bg: #0A1A0E;
+  --bg-warm: #102818;
+  --cream: #183020;
+  --cream-dark: #142818;
+  --orange: #00FF41;
+  --orange-hover: #33FF6B;
+  --orange-dark: #00CC34;
+  --brown: #C0F0C8;
+  --brown-mid: #78B880;
+  --brown-light: #508058;
+  --border: #204A28;
+  --red: #FF4030;
+  --green: #00FF41;
+  --scanline: rgba(0, 255, 65, 0.02);
+  --grain-opacity: 0.05;
+}
+
+[data-theme="midnight"] {
+  --bg: #0E1428;
+  --bg-warm: #121C38;
+  --cream: #1A2848;
+  --cream-dark: #162040;
+  --orange: #4A9AFF;
+  --orange-hover: #6BB0FF;
+  --orange-dark: #3878CC;
+  --brown: #C8D8F0;
+  --brown-mid: #8098B8;
+  --brown-light: #506880;
+  --border: #283858;
+  --red: #FF5040;
+  --green: #50D070;
+  --scanline: rgba(74, 154, 255, 0.02);
+  --grain-opacity: 0.04;
+}
+
+[data-theme="sakura"] {
+  --bg: #FFF0F2;
+  --bg-warm: #FFE0E8;
+  --cream: #FFF5F7;
+  --cream-dark: #FFE8EE;
+  --orange: #E8308A;
+  --orange-hover: #FF40A0;
+  --orange-dark: #C02070;
+  --brown: #401028;
+  --brown-mid: #804060;
+  --brown-light: #A07088;
+  --border: #D090A8;
+  --red: #E03040;
+  --green: #40B870;
+  --scanline: rgba(232, 48, 138, 0.015);
+  --grain-opacity: 0.02;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,7 +114,7 @@ body::after {
   content: '';
   position: fixed;
   inset: 0;
-  opacity: 0.025;
+  opacity: var(--grain-opacity, 0.025);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
   pointer-events: none;
@@ -71,8 +145,8 @@ body::after {
     0deg,
     transparent,
     transparent 3px,
-    rgba(45, 27, 14, 0.015) 3px,
-    rgba(45, 27, 14, 0.015) 6px
+    var(--scanline) 3px,
+    var(--scanline) 6px
   );
   pointer-events: none;
 }
@@ -606,6 +680,39 @@ body::after {
   grid-column: 1 / -1;
 }
 
+/* ============ THEME PICKER ============ */
+#theme-picker {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+#theme-picker label {
+  font-size: 8px;
+  margin-right: 2px;
+}
+.theme-swatch {
+  width: 14px; height: 14px;
+  border: 2px solid var(--brown-light);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.08s, border-color 0.1s;
+  background: #888;
+}
+.theme-swatch:hover { transform: scale(1.2); }
+.theme-swatch.active { border-color: var(--orange); border-width: 2px; transform: scale(1.15); }
+.theme-swatch[data-theme="classic"]  { background: #D4520A; }
+.theme-swatch[data-theme="ember"]    { background: #FF6B2B; }
+.theme-swatch[data-theme="terminal"] { background: #00FF41; }
+.theme-swatch[data-theme="midnight"] { background: #4A9AFF; }
+.theme-swatch[data-theme="sakura"]   { background: #E8308A; }
+
+/* half-and-half to show bg+accent */
+.theme-swatch[data-theme="classic"]  { background: linear-gradient(135deg, #EDE0CC 50%, #D4520A 50%); }
+.theme-swatch[data-theme="ember"]    { background: linear-gradient(135deg, #1A120E 50%, #FF6B2B 50%); }
+.theme-swatch[data-theme="terminal"] { background: linear-gradient(135deg, #0A1A0E 50%, #00FF41 50%); }
+.theme-swatch[data-theme="midnight"] { background: linear-gradient(135deg, #0E1428 50%, #4A9AFF 50%); }
+.theme-swatch[data-theme="sakura"]   { background: linear-gradient(135deg, #FFF0F2 50%, #E8308A 50%); }
+
 @media (max-width: 450px) {
   #top-bar { padding: 6px 8px; gap: 6px; }
   #brand { font-size: 16px; letter-spacing: 2px; }
@@ -650,6 +757,14 @@ body::after {
     <label>Vol</label>
     <input id="vol-slider" type="range" min="0" max="100" value="80">
     <span id="status" class="disconnected">...</span>
+    <div id="theme-picker">
+      <label>Theme</label>
+      <button class="theme-swatch" data-theme="classic" title="Classic"></button>
+      <button class="theme-swatch" data-theme="ember" title="Ember"></button>
+      <button class="theme-swatch" data-theme="terminal" title="Terminal"></button>
+      <button class="theme-swatch" data-theme="midnight" title="Midnight"></button>
+      <button class="theme-swatch" data-theme="sakura" title="Sakura"></button>
+    </div>
     <input id="username-input" type="text" placeholder="Your name">
   </div>
 
@@ -669,6 +784,12 @@ body::after {
 <div id="toast"></div>
 
 <script>
+// Apply theme immediately to prevent flash
+(function() {
+  var t = localStorage.getItem("sb_theme") || "classic";
+  document.documentElement.setAttribute("data-theme", t);
+})();
+
 (function() {
   var roomCode = localStorage.getItem("sb_room") || "";
   var sounds = [];
@@ -680,6 +801,7 @@ body::after {
   var audioBuffers = {};
   var playDebounce = {};
   var colorPicker = null;
+  var currentTheme = localStorage.getItem("sb_theme") || "classic";
 
   var COLORS = [
     { name: "Flame",   hex: "#D4520A" },
@@ -1100,6 +1222,26 @@ body::after {
     username = this.value;
     localStorage.setItem("sb_username", this.value);
   });
+
+  // Theme switching
+  function setTheme(name) {
+    currentTheme = name;
+    document.documentElement.setAttribute("data-theme", name);
+    localStorage.setItem("sb_theme", name);
+    var swatches = document.querySelectorAll(".theme-swatch");
+    swatches.forEach(function(s) {
+      s.classList.toggle("active", s.getAttribute("data-theme") === name);
+    });
+  }
+
+  document.querySelectorAll(".theme-swatch").forEach(function(swatch) {
+    swatch.addEventListener("click", function() {
+      setTheme(swatch.getAttribute("data-theme"));
+    });
+  });
+
+  // Mark active theme swatch on load
+  setTheme(currentTheme);
 })();
 </script>
 </body>
