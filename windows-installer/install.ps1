@@ -158,26 +158,54 @@ function Install-Addon {
 
 # --- Binary patching via JAR (optional) ---
 
+function Find-JarFile {
+    $jarName = "TS6AddonInstaller-3.4.0-all.jar"
+    $searchPaths = @(
+        $PSScriptRoot,
+        (Split-Path $PSScriptRoot -Parent),
+        (Join-Path (Split-Path $PSScriptRoot -Parent) ".."),
+        $PWD.Path
+    )
+    foreach ($dir in $searchPaths) {
+        $candidate = Join-Path $dir $jarName
+        if (Test-Path $candidate) { return $candidate }
+    }
+    return $null
+}
+
 function Invoke-BinaryPatch {
     param([string]$TSDir)
 
-    $jarPath = Join-Path $PSScriptRoot "TS6AddonInstaller-3.4.0-all.jar"
-    if (-not (Test-Path $jarPath)) {
-        Write-Host "  JAR installer not found, skipping binary patch." -ForegroundColor Yellow
+    $jarPath = Find-JarFile
+    if (-not $jarPath) {
+        Write-Host ""
+        Write-Host "  ERROR: TS6AddonInstaller JAR not found!" -ForegroundColor Red
+        Write-Host "  Make sure TS6AddonInstaller-3.4.0-all.jar is in the same" -ForegroundColor Yellow
+        Write-Host "  folder as this installer." -ForegroundColor Yellow
         return $false
     }
 
     # Check for Java
     $java = Get-Command java -ErrorAction SilentlyContinue
     if (-not $java) {
-        Write-Host "  Java not found. Binary patching skipped." -ForegroundColor Yellow
-        Write-Host "  The soundboard may still work, but if TS6 blocks the iframe," -ForegroundColor Yellow
-        Write-Host "  install Java and run the TS6AddonInstaller JAR manually." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "  Java is required but not installed!" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "  Opening the Java download page in your browser..." -ForegroundColor Cyan
+        Write-Host "  Download and install Java, then run this installer again." -ForegroundColor Cyan
+        Write-Host ""
+        Start-Process "https://adoptium.net/temurin/releases/?os=windows&package=jdk"
         return $false
     }
 
-    Write-Host "  Found Java. Launching TS6 Addon Installer for binary patching..."
-    Write-Host "  -> In the GUI: select the TeamSpeak directory and click Patch." -ForegroundColor Cyan
+    Write-Host "  Found Java. Launching TS6 Addon Installer..." -ForegroundColor Green
+    Write-Host ""
+    Write-Host "  A new window will open. Follow these steps:" -ForegroundColor Cyan
+    Write-Host "    1. Click the Browse button" -ForegroundColor White
+    Write-Host "    2. Navigate to: $TSDir" -ForegroundColor White
+    Write-Host "    3. Click Patch" -ForegroundColor White
+    Write-Host "    4. Close the window when done" -ForegroundColor White
+    Write-Host ""
     Start-Process -FilePath "java" -ArgumentList "-jar `"$jarPath`"" -Wait
     return $true
 }

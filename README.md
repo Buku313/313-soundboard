@@ -4,11 +4,11 @@ Shared soundboard addon for TeamSpeak 6. Plays sounds from MyInstants in your vo
 
 ## Windows
 
-1. Close TeamSpeak 6
-2. Download and extract this repo
-3. Open `windows-installer/` and double-click **Install 313 Soundboard.bat**
-4. The installer will patch TeamSpeak and inject the addon
-5. If Java is not installed, grab it from [adoptium.net](https://adoptium.net/) first — the binary patch requires it
+1. [Install Java](https://adoptium.net/temurin/releases/?os=windows&package=jdk) if you don't have it (the installer will open this page for you if needed)
+2. Close TeamSpeak 6
+3. [Download this repo as a zip](https://github.com/Buku313/313-soundboard/archive/refs/heads/master.zip) and extract it
+4. Double-click **Install 313 Soundboard.bat** in the extracted folder
+5. A patching window will open — select your TeamSpeak folder and click **Patch**
 6. Restart TeamSpeak 6
 
 ## Linux
