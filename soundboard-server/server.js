@@ -118,7 +118,7 @@ function isValidMyInstantsUrl(urlStr) {
     if (u.protocol !== "https:" && u.protocol !== "http:") return false;
     const host = u.hostname.toLowerCase();
     if (host !== "www.myinstants.com" && host !== "myinstants.com") return false;
-    if (!/^\/instant\/[\w-]+\/?$/.test(u.pathname)) return false;
+    if (!/^(\/[a-z]{2})?\/instant\/[\w-]+\/?$/.test(u.pathname)) return false;
     return true;
   } catch {
     return false;
